@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>龟兔赛跑</title>
+    <script src="https://cdn.bootcss.com/react/16.8.6/umd/react.production.min.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.8.6/umd/react-dom.production.min.js"></script>
+    <style>
+      .header {
+        display: flex;
+        justify-content: center;
+      }
+
+      .track {
+        border-bottom: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script lang="jsx">
+        function App(){
+      return (
+        <div>
+          <div class="header">
+            <Time1/>
+            <Judge/>
+            <Time2/>
+          </div>
+          <Track1 />
+          <Track2 />
+        </div>
+      )
+    }
+
+    function Time1(){
+      return (
+        <div>
+          <h2 class="">兔子用时</h2>
+          <div>0</div>
+        </div>
+      )
+    }
+
+    function Time2(){
+      return (
+        <div>
+          <h2>乌龟用时</h2>
+          <div>0</div>
+        </div>
+      )
+    }
+
+    function Judge(){
+      return (
+        <div>
+          裁判
+        </div>
+      )
+    }
+
+    function Track1(){
+      return (
+        <div>
+          <div>兔子</div>
+          <div class="track"></div>
+        </div>
+      )
+    }
+
+    function Track2(){
+      return (
+        <div>
+          <div>乌龟</div>
+          <div class="track"></div>
+        </div>
+      )
+    }
+
+    ReactDOM.render(
+      <App />,
+      document.querySelector('#root')
+    )
+  </script>
+</html>
