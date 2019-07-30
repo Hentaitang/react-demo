@@ -15,40 +15,86 @@
       .track {
         border-bottom: 1px solid black;
       }
+
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      .wrapper {
+        padding: 40px;
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
   </body>
   <script lang="jsx">
-        function App(){
-      return (
-        <div>
-          <div class="header">
-            <Time1/>
-            <Judge/>
-            <Time2/>
+        class App extends React.Component{
+      constructor(){
+        super()
+        this.state = {
+           result1: 0,
+           result2: 0
+        }
+        this.t0 = new Date()
+      }
+      success1(){
+        console.log('兔子到了')
+        let time = new Date() - this.t0
+        this.setState({
+          result1: time
+        })
+      }
+      success2(){
+        console.log('乌龟到了')
+        let time = new Date() - this.t0
+        this.setState({
+          result2: time
+        })
+      }
+      render(){
+        // 爷传孙
+        return (
+          <div class="wrapper">
+            <div class="header">
+              <Time1 result={this.state.result1}/>
+              <Judge/>
+              <Time2 result={this.state.result2}/>
+            </div>
+            <Playground success1={this.success1.bind(this)}
+                        success2={this.success2.bind(this)} />
           </div>
-          <Track1 />
-          <Track2 />
-        </div>
-      )
+        )
+      }
     }
 
-    function Time1(){
+    function Playground(props){
+      let success1 = props.success1,
+      success2 = props.success2
+      // 父传子
       return (
         <div>
-          <h2 class="">兔子用时</h2>
-          <div>0</div>
+          <Track1 success={success1}/>
+          <Track2 success={success2}/>
         </div>
       )
     }
 
-    function Time2(){
+    function Time1(props){
+      return (
+        <div>
+          <h2>兔子用时</h2>
+          <div>{props.result}</div>
+        </div>
+      )
+    }
+
+    function Time2(props){
       return (
         <div>
           <h2>乌龟用时</h2>
-          <div>0</div>
+          <div>{props.result}</div>
         </div>
       )
     }
@@ -61,22 +107,68 @@
       )
     }
 
-    function Track1(){
-      return (
-        <div>
-          <div>兔子</div>
-          <div class="track"></div>
-        </div>
-      )
+    class Track1 extends React.Component{
+      constructor(props){
+        super(props)
+        let n = 0
+        this.state = {
+          style: {
+            transform: `translateX(${n}%)`
+          }
+        }
+        let inter = setInterval(()=>{
+          n += 10
+          this.setState({
+            style: {
+              transform: `translateX(${n}%)`
+            }
+          })
+          if(n >= 100){
+            clearInterval(inter)
+            this.props.success()
+            }
+        }, 500)
+      }
+      render(){
+        return (
+          <div>
+            <div style={this.state.style}>兔子</div>
+              <div class="track"></div>
+            </div>
+          )
+      }
     }
 
-    function Track2(){
-      return (
-        <div>
-          <div>乌龟</div>
-          <div class="track"></div>
-        </div>
-      )
+    class Track2 extends React.Component{
+      constructor(props){
+        super(props)
+        let n = 0
+        this.state = {
+          style: {
+            transform: `translateX(${n}%)`
+          }
+        }
+        let inter = setInterval(()=>{
+          n += 5
+          this.setState({
+            style: {
+              transform: `translateX(${n}%)`
+            }
+          })
+          if(n >= 100){
+            clearInterval(inter)
+            this.props.success()
+          }
+        }, 500)
+      }
+      render(){
+        return (
+          <div>
+            <div style={this.state.style}>乌龟</div>
+            <div class="track"></div>
+          </div>
+        )
+      }
     }
 
     ReactDOM.render(
