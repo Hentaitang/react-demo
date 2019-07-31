@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>redux</title>
+  <script src="https://cdn.bootcss.com/react/16.8.5/umd/react.production.min.js"></script>
+  <script src="https://cdn.bootcss.com/react-dom/16.8.6/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.bootcss.com/redux/4.0.4/redux.min.js"></script>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    .root {
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid black;
+    }
+
+    .papa {
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid gray;
+    }
+
+    .son {
+      padding: 10px;
+      margin: 10px;
+      border: 1px solid red;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+<script lang="jsx">
+  let money = {
+    amount: 100000
+  }
+  let reducer = (state, action) => {
+    state = state || {
+      money: money
+    }
+    switch (action.type) {
+      case '我想消费':
+        return {
+          money: {
+            amount: state.money.amount - action.payload
+          }
+        }
+        break
+      default:
+        return state
+        break
+    }
+  }
+  let store = Redux.createStore(reducer)
+
+  class App extends React.Component {
+    constructor() {
+      super()
+    }
+    render() {
+      return ( <
+        div className = "root" >
+        <
+        BigPapa money = {
+          this.props.state.money
+        }
+        /> <
+        SmallPapa money = {
+          this.props.state.money
+        }
+        /> <
+        /div>
+      )
+    }
+  }
+
+  function BigPapa(props) {
+    return ( <
+      div className = "papa" > 大爸 {
+        props.money.amount
+      } <
+      Son1 money = {
+        props.money
+      }
+      /> <
+      Son2 money = {
+        props.money
+      }
+      /> <
+      /div>
+    )
+  }
+
+  function Son1(props) {
+    return ( <
+      div className = "son" > 儿子1 {
+        props.money.amount
+      } < /div>
+    )
+  }
+
+  class Son2 extends React.Component {
+    constructor() {
+      super()
+    }
+    buy() {
+      store.dispatch({
+        type: '我想消费',
+        payload: 100
+      })
+    }
+    render() {
+      return ( <
+        div className = "son" > 儿子2 {
+          this.props.money.amount
+        } <
+        button onClick = {
+          () => this.buy()
+        } > 消费 < /button> <
+        /div>
+      )
+    }
+  }
+
+  function SmallPapa(props) {
+    return ( <
+      div className = "papa" > 小爸 {
+        props.money.amount
+      } <
+      Son3 money = {
+        props.money
+      }
+      /> <
+      Son4 money = {
+        props.money
+      }
+      /> <
+      /div>
+    )
+  }
+
+  function Son3(props) {
+    return ( <
+      div className = "son" > 儿子3 {
+        props.money.amount
+      } < /div>
+    )
+  }
+
+  function Son4(props) {
+    return ( <
+      div className = "son" > 儿子4 {
+        props.money.amount
+      } < /div>
+    )
+  }
+
+  function render() {
+    ReactDOM.render( <
+      App state = {
+        store.getState()
+      }
+      />,
+      document.querySelector('#app')
+    )
+  }
+
+  store.subscribe(render)
+  render()
+</script>
+
+</html>
