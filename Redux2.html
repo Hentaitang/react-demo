@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script src="https://cdn.bootcss.com/redux/4.0.4/redux.min.js"></script>
+  <script>
+    function add1(number) {
+      store.dispatch({
+        type: 'add',
+        payload: number
+      })
+    }
+
+    function addIf() {
+      let state = store.getState()
+      if (state % 2 === 1) {
+        store.dispatch({
+          type: 'add',
+          payload: 1
+        })
+      }
+    }
+
+    function addAsyc() {
+      setTimeout(() => {
+        store.dispatch({
+          type: 'add',
+          payload: 1
+        })
+      }, 2000)
+    }
+
+    function render(store) {
+      let root = document.querySelector('#root')
+      root.innerHTML = `
+    <div>
+      你点击了${store.getState()}次
+      <div>
+        <button id="add1" onClick="add1(1)">+1</button>      
+        <button id="minus1" onClick="add1(2)">+2</button>
+        <button id="add1IfOdd" onClick="addIf()">如果是单数就+1</button>
+        <button id="add1AfterSec" onClick="addAsyc()">两秒后+1</button>
+      </div>
+    </div>
+      `
+    }
+
+    let reducer = (state, action) => {
+      if (state === undefined) return 0
+      switch (action.type) {
+        case 'add':
+          return state + action.payload
+        default:
+          return state
+      }
+    }
+
+    let store = Redux.createStore(reducer)
+
+    render(store)
+    store.subscribe(() => {
+      render(store)
+    })
+  </script>
+</body>
+
+</html>
