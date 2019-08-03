@@ -58,6 +58,11 @@ class App extends React.Component {
         <div>
           <a href="https://codesandbox.io/s/cool-browser-5i794"> React-redux</a>
         </div>
+        <div>
+          <a href="https://codesandbox.io/s/admiring-proskuriakova-rbtmb">
+            React Hooks
+          </a>
+        </div>
       </div>
     );
   }
